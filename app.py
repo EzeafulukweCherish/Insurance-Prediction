@@ -7,8 +7,6 @@ how a trained model gets wrapped into a production-ready web service.
 """
 
 import os
-import sys
-import traceback
 from contextlib import asynccontextmanager
 
 import pandas as pd
@@ -33,45 +31,7 @@ ml_models = {}
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # --- Startup: runs once, before the app accepts any traffic ---
-    try:
-        ml_models["insurance_model"] = load_model("deployment_28042020")
-        # capture runtime + package versions for debugging
-        try:
-            import pandas as _pd
-            import numpy as _np
-            import sklearn as _sk
-            import pycaret as _pc
-        except Exception:
-            _pd = _np = _sk = _pc = None
-
-        meta = {
-            "python_version": sys.version.splitlines()[0],
-            "pandas": getattr(_pd, "__version__", None),
-            "numpy": getattr(_np, "__version__", None),
-            "sklearn": getattr(_sk, "__version__", None),
-            "pycaret": getattr(_pc, "__version__", None),
-        }
-
-        # inspect model for common pycaret-prep attributes
-        try:
-            model = ml_models.get("insurance_model")
-            prep = getattr(model, "prep_pipe_transformer", None) or getattr(model, "prep_pipe", None)
-            if prep is not None:
-                numeric = getattr(prep, "numeric_features", None)
-                meta["model_prep_numeric_features"] = list(numeric) if numeric is not None else None
-                meta["prep_has_n_features_in"] = hasattr(prep, "n_features_in_")
-            else:
-                meta["model_prep"] = None
-        except Exception:
-            meta["model_inspect_error"] = traceback.format_exc()
-
-        ml_models["meta"] = meta
-    except Exception:
-        ml_models.clear()
-        try:
-            app.logger.error("Model load failed:\n%s", traceback.format_exc())
-        except Exception:
-            pass
+    ml_models["insurance_model"] = load_model("deployment_28042020")
     yield
     # --- Shutdown: runs once, when the server is stopping ---
     # This is where you'd close DB connections, flush logs, etc.
@@ -128,7 +88,7 @@ def home(request: Request):
     # dict - that's a Starlette/FastAPI convention, not an optional extra.
     return templates.TemplateResponse("home.html", {"request": request})
 
-#for the web app
+
 @app.post("/predict")
 def predict(
     request: Request,
@@ -159,7 +119,7 @@ def predict(
         {"request": request, "pred": f"Expected Bill will be {round(prediction)}"},
     )
 
-#for the Json api endpoint (Swagger Docs or Postman)
+
 @app.post("/predict_api")
 def predict_api(payload: InsuranceInput):
     """JSON API for programmatic use (e.g. curl, another service, a frontend fetch call).
@@ -183,13 +143,6 @@ def health():
     more meaningful check.
     """
     return {"status": "ok", "model_loaded": "insurance_model" in ml_models}
-
-
-@app.get("/debug")
-def debug():
-    """Return runtime and model inspection metadata to help debug deployment issues."""
-    meta = ml_models.get("meta") or {}
-    return {"status": "ok", "model_loaded": "insurance_model" in ml_models, "meta": meta}
 
 
 if __name__ == "__main__":
