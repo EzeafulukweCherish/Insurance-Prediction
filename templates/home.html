@@ -71,7 +71,8 @@
       if (!modal) return;
       const prediction = modal.dataset.prediction?.trim();
       if (prediction) {
-        modal.querySelector('.modal-value').textContent = 'Expected Bill will be ' + prediction;
+        const cleanPrediction = prediction.replace(/^₦?\s*Expected\s+Bill\s+will\s+be\s*/i, '').trim();
+        modal.querySelector('.modal-value').textContent = cleanPrediction;
         modal.classList.add('visible');
       }
       const closeButtons = modal.querySelectorAll('.modal-close, .modal-action');
