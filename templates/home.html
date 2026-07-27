@@ -12,11 +12,11 @@
 
 <body>
   <div class="app-shell">
-    <header class="hero-panel">
+    <section class="hero-panel">
       <div class="hero-copy">
         <p class="eyebrow">Insurance prediction, reimagined</p>
         <h1>Estimate insurance charges in <span>₦</span> with accuracy</h1>
-        <p class="hero-text">Use this clean UI to forecast medical insurance cost in Nigerian Naira. </p>
+        <p class="hero-text">Use this clean UI to forecast medical insurance cost in Nigerian Naira.</p>
       </div>
       <div class="hero-card">
         <div class="card-header">
@@ -51,17 +51,7 @@
           <button type="submit" class="button-primary">Calculate in ₦</button>
         </form>
       </div>
-    </header>
-
-    <main class="info-section">
-      <section class="result-panel">
-        <div class="result-header">
-          <h2>Estimated charge</h2>
-          <span class="result-tag">NGN</span>
-        </div>
-        <p class="result-text">{{ pred or "Complete the form to display the estimated insurance cost in Naira." }}</p>
-      </section>
-    </main>
+    </section>
   </div>
 
   <div class="prediction-modal" data-prediction="{{ pred or '' }}">
@@ -69,7 +59,7 @@
       <button class="modal-close" type="button" aria-label="Close prediction popup">×</button>
       <span class="modal-badge">Prediction ready</span>
       <h2>Estimated insurance charge</h2>
-      <p class="modal-value">₦0</p>
+      <p class="modal-value">₦Expected Bill will be 0</p>
       <p class="modal-description">This value is based on the inputs you submitted.</p>
       <button class="button-primary modal-action" type="button">Close</button>
     </div>
@@ -81,7 +71,7 @@
       if (!modal) return;
       const prediction = modal.dataset.prediction?.trim();
       if (prediction) {
-        modal.querySelector('.modal-value').textContent = '₦' + prediction;
+        modal.querySelector('.modal-value').textContent = '₦Expected Bill will be ' + prediction;
         modal.classList.add('visible');
       }
       const closeButtons = modal.querySelectorAll('.modal-close, .modal-action');
