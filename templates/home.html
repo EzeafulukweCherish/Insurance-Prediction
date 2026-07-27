@@ -16,7 +16,7 @@
       <div class="hero-copy">
         <p class="eyebrow">Insurance prediction, reimagined</p>
         <h1>Estimate insurance charges in <span>₦</span> with accuracy</h1>
-        <p class="hero-text">Use this clean UI to forecast medical insurance cost in Nigerian Naira. The form submits to the same backend, while the interface stays sleek, modern, and easy to use.</p>
+        <p class="hero-text">Use this clean UI to forecast medical insurance cost in Nigerian Naira. </p>
       </div>
       <div class="hero-card">
         <div class="card-header">
@@ -61,22 +61,36 @@
         </div>
         <p class="result-text">{{ pred or "Complete the form to display the estimated insurance cost in Naira." }}</p>
       </section>
-      <section class="notes-panel">
-        <h3>Programmatic access</h3>
-        <p>Fetch predictions from the JSON endpoint and render them in any frontend or dashboard.</p>
-        <pre><code>POST /predict_api
-Content-Type: application/json
-{
-  "age": 30,
-  "sex": "male",
-  "bmi": 27.9,
-  "children": 1,
-  "smoker": "no",
-  "region": "northwest"
-}
-</code></pre>
-      </section>
     </main>
   </div>
+
+  <div class="prediction-modal" data-prediction="{{ pred or '' }}">
+    <div class="modal-card">
+      <button class="modal-close" type="button" aria-label="Close prediction popup">×</button>
+      <span class="modal-badge">Prediction ready</span>
+      <h2>Estimated insurance charge</h2>
+      <p class="modal-value">₦0</p>
+      <p class="modal-description">This value is based on the inputs you submitted.</p>
+      <button class="button-primary modal-action" type="button">Close</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const modal = document.querySelector('.prediction-modal');
+      if (!modal) return;
+      const prediction = modal.dataset.prediction?.trim();
+      if (prediction) {
+        modal.querySelector('.modal-value').textContent = '₦' + prediction;
+        modal.classList.add('visible');
+      }
+      const closeButtons = modal.querySelectorAll('.modal-close, .modal-action');
+      closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          modal.classList.remove('visible');
+        });
+      });
+    });
+  </script>
 </body>
 </html>

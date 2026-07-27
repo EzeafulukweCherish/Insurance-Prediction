@@ -244,3 +244,87 @@ body {
     padding: 26px;
   }
 }
+
+.prediction-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 50;
+}
+
+.prediction-modal.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  width: min(560px, calc(100% - 32px));
+  padding: 32px;
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.16);
+  border: 1px solid #e6e8ef;
+  position: relative;
+  text-align: center;
+}
+
+.modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: #f3f4f6;
+  color: #111827;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.modal-close:hover {
+  transform: scale(1.05);
+  background: #e5e7eb;
+}
+
+.modal-badge {
+  display: inline-flex;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: #047857;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.modal-card h2 {
+  margin: 0 0 14px;
+  font-size: 1.8rem;
+  color: #111827;
+}
+
+.modal-value {
+  margin: 0;
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #0f766e;
+}
+
+.modal-description {
+  margin: 18px auto 0;
+  max-width: 520px;
+  color: #4b5563;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.modal-action {
+  margin-top: 28px;
+}
