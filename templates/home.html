@@ -6,7 +6,7 @@
   <title>Insurance Charge Predictor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/style.css">
 </head>
 
@@ -14,23 +14,23 @@
   <div class="app-shell">
     <header class="hero-panel">
       <div class="hero-copy">
-        <p class="eyebrow">Insurance prediction made simple</p>
-        <h1>Predict medical insurance cost with confidence</h1>
-        <p class="hero-text">Enter customer details below and get an instant estimated insurance charge. Built for fast experimentation, clear insights, and production-ready deployment.</p>
+        <p class="eyebrow">Insurance prediction, reimagined</p>
+        <h1>Estimate insurance charges in <span>₦</span> with accuracy</h1>
+        <p class="hero-text">Use this clean UI to forecast medical insurance cost in Nigerian Naira. The form submits to the same backend, while the interface stays sleek, modern, and easy to use.</p>
       </div>
       <div class="hero-card">
         <div class="card-header">
-          <span>Live Prediction</span>
+          <span>Model input</span>
           <strong>FastAPI + PyCaret</strong>
         </div>
         <form action="/predict" method="POST" class="form-grid">
           <label>
             <span>Age</span>
-            <input type="number" name="age" min="18" placeholder="e.g. 30" required>
+            <input type="number" name="age" min="18" placeholder="Enter age" required>
           </label>
           <label>
             <span>Sex</span>
-            <input type="text" name="sex" placeholder="male / female" required>
+            <input type="text" name="sex" placeholder="male or female" required>
           </label>
           <label>
             <span>BMI</span>
@@ -38,29 +38,32 @@
           </label>
           <label>
             <span>Children</span>
-            <input type="number" name="children" min="0" placeholder="e.g. 2" required>
+            <input type="number" name="children" min="0" placeholder="Number of dependents" required>
           </label>
           <label>
             <span>Smoker</span>
-            <input type="text" name="smoker" placeholder="yes / no" required>
+            <input type="text" name="smoker" placeholder="yes or no" required>
           </label>
           <label>
             <span>Region</span>
             <input type="text" name="region" placeholder="southwest" required>
           </label>
-          <button type="submit" class="button-primary">Predict cost</button>
+          <button type="submit" class="button-primary">Calculate in ₦</button>
         </form>
       </div>
     </header>
 
     <main class="info-section">
       <section class="result-panel">
-        <h2>Prediction result</h2>
-        <p class="result-text">{{ pred or "Submit the form to see the estimated insurance charge." }}</p>
+        <div class="result-header">
+          <h2>Estimated charge</h2>
+          <span class="result-tag">NGN</span>
+        </div>
+        <p class="result-text">{{ pred or "Complete the form to display the estimated insurance cost in Naira." }}</p>
       </section>
       <section class="notes-panel">
-        <h3>API info</h3>
-        <p>You can also integrate this model programmatically using the JSON endpoint:</p>
+        <h3>Programmatic access</h3>
+        <p>Fetch predictions from the JSON endpoint and render them in any frontend or dashboard.</p>
         <pre><code>POST /predict_api
 Content-Type: application/json
 {
@@ -75,4 +78,5 @@ Content-Type: application/json
       </section>
     </main>
   </div>
+</body>
 </html>
