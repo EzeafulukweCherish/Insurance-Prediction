@@ -88,7 +88,7 @@ def home(request: Request):
     # dict - that's a Starlette/FastAPI convention, not an optional extra.
     return templates.TemplateResponse("home.html", {"request": request})
 
-
+#for the web app
 @app.post("/predict")
 def predict(
     request: Request,
@@ -119,7 +119,7 @@ def predict(
         {"request": request, "pred": f"Expected Bill will be {round(prediction)}"},
     )
 
-
+#for the Json api endpoint (Swagger Docs or Postman)
 @app.post("/predict_api")
 def predict_api(payload: InsuranceInput):
     """JSON API for programmatic use (e.g. curl, another service, a frontend fetch call).

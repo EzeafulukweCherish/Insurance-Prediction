@@ -8,12 +8,10 @@
 # problems caused by mismatched Python/library versions (a very common
 # issue with older ML libraries like pycaret==1.0.0).
 
-# 1. Base image: start from an official, minimal Python image instead of
-#    a full OS. "slim" has just enough OS packages to run Python, which
-#    keeps the final image smaller and faster to pull/deploy.
-#    pycaret==1.0.0 is a 2020-era package built for Python 3.6-3.8, so we
-#    pin the base image to Python 3.8 rather than a newer version.
-FROM python:3.8-slim
+# 1. Base image: pycaret==1.0.0 only supports Python 3.6/3.7, and the
+#    saved model file was pickled under that same old version - so we
+#    must match it exactly, not use a newer Python.
+FROM python:3.7-slim
 
 # 2. Set the working directory inside the container. Every command below
 #    (COPY, RUN, CMD) now runs relative to /app inside the container's
@@ -34,6 +32,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 #    re-downloading every package - this makes rebuilds much faster
 #    whenever you only change app.py.
 COPY requirements.txt .
+
+# 4a. Install pycaret==1.0.0 with --no-deps first. Its normal dependency
+#     list pins pandas-profiling==2.3.0, which has been removed from
+#     PyPI entirely - any normal "pip install pycaret==1.0.0" will always
+#     fail now, forever, regardless of Python version. --no-deps installs
+#     PyCaret's own code without pulling that dead dependency.
+RUN pip install --no-cache-dir --no-deps pycaret==1.0.0
+
+# 4b. Now install everything the app (and PyCaret's load_model/
+#     predict_model functions) actually need, at versions compatible
+#     with Python 3.7. This list intentionally excludes pandas-profiling.
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 5. Now copy the rest of the application code (this layer changes often,
