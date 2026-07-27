@@ -38,7 +38,7 @@ RUN pip install --no-cache-dir --no-deps pycaret==1.0.0 && \
     pandas==1.1.5 \
     numpy==1.19.5 \
     scipy==1.5.4 \
-    scikit-learn==0.23.2 \
+    scikit-learn==0.22.1 \
     joblib==0.17.0 \
     fastapi==0.104.1 \
     "uvicorn[standard]==0.24.0" \
