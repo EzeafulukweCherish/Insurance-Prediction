@@ -59,7 +59,7 @@
       <button class="modal-close" type="button" aria-label="Close prediction popup">×</button>
       <span class="modal-badge">Prediction ready</span>
       <h2>Estimated insurance charge</h2>
-      <p class="modal-value">₦Expected Bill will be 0</p>
+      <p class="modal-value"></p>
       <p class="modal-description">This value is based on the inputs you submitted.</p>
       <button class="button-primary modal-action" type="button">Close</button>
     </div>
@@ -71,7 +71,7 @@
       if (!modal) return;
       const prediction = modal.dataset.prediction?.trim();
       if (prediction) {
-        modal.querySelector('.modal-value').textContent = '₦Expected Bill will be ' + prediction;
+        modal.querySelector('.modal-value').textContent = 'Expected Bill will be ' + prediction;
         modal.classList.add('visible');
       }
       const closeButtons = modal.querySelectorAll('.modal-close, .modal-action');
